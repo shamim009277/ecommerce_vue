@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Admin\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,10 +15,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::prefix('admin')->group(base_path('routes/admin.php'));
+Route::prefix('user')->group(base_path('routes/user.php'));
 
 Auth::routes();
+Route::get('user_login', [HomeController::class,'index'])->name('login');
+Route::get('/', function () {
+    return view('public.public_master');
+});
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/{any}', function () {
+    return view('public.public_master');
+});
